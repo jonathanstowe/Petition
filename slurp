@@ -1,0 +1,21 @@
+#!/usr/bin/env perl6 
+
+use lib <lib>;
+
+use Petition;
+
+
+multi sub MAIN('by-country', IO() $file ) {
+	my Petition $petition = Petition.from-json($file.slurp);
+    for $petition.signatures-by-country.sort(-> $a, $b { $b.signature-count <=> $a.signature-count }) -> $country {
+        say sprintf "%-50s %10i", $country.name , $country.signature-count;
+    }
+}
+multi sub MAIN('by-constituency', IO() $file ) {
+	my Petition $petition = Petition.from-json($file.slurp);
+    for $petition.signatures-by-constituency.sort(-> $a, $b { $b.signature-count <=> $a.signature-count }) -> $constituency {
+        say sprintf "%-50s %10i", $constituency.name , $constituency.signature-count;
+    }
+}
+
+# vim: ft=perl6
